@@ -1,0 +1,69 @@
+SEQUENTIAL WORKFLOW RUN
+======================
+
+📄 Loading config: configs/sequential.yaml
+
+▶ Starting SEQUENTIAL workflow
+
+→ Running agent: researcher
+→ Running agent: writer
+
+✔ Sequential workflow completed
+
+
+📦 Final Shared Context:
+
+--- researcher ---
+[Research Assistant | researcher]
+Goal: Find key insights about electric vehicles
+Result: Task completed successfully.
+
+--- writer ---
+[Content Writer | writer]
+Goal: Write a concise summary using the research
+Context received:
+- From researcher: [Research Assistant | researcher]
+Goal: Find key insights about electric vehicles
+Result: Task completed successfully.
+Result: Task completed successfully.
+
+
+
+PARALLEL WORKFLOW RUN
+====================
+
+📄 Loading config: configs/parallel.yaml
+
+▶ Starting PARALLEL workflow
+
+→ Parallel agent finished: backend
+→ Parallel agent finished: frontend
+
+→ Running aggregation agent: reviewer
+
+✔ Parallel workflow completed
+
+
+📦 Final Shared Context:
+
+--- backend ---
+[Backend Engineer | backend]
+Goal: Propose an API design
+Result: Task completed successfully.
+
+--- frontend ---
+[Frontend Engineer | frontend]
+Goal: Propose a UI layout
+Result: Task completed successfully.
+
+--- reviewer ---
+[Tech Lead | reviewer]
+Goal: Review and consolidate proposals
+Context received:
+- From backend: [Backend Engineer | backend]
+Goal: Propose an API design
+Result: Task completed successfully.
+- From frontend: [Frontend Engineer | frontend]
+Goal: Propose a UI layout
+Result: Task completed successfully.
+Result: Task completed successfully.
