@@ -25,6 +25,26 @@ class Agent:
         if context_summary:
             output += f"Context received:\n{context_summary}\n"
 
-        output += "Result: Task completed successfully."
+        # Tool execution (MCP-style support)
+        if self.tools:
+            tool_results = self.run_tools()
+            output += "Tools used:\n"
+            for result in tool_results:
+                output += f"- {result}\n"
 
+        output += "Result: Task completed successfully."
         return output
+
+    def run_tools(self):
+        """
+        Simulate tool execution.
+        """
+        results = []
+        for tool in self.tools:
+            if tool == "python":
+                results.append("Python tool executed successfully")
+            elif tool == "web":
+                results.append("Web tool invoked")
+            else:
+                results.append(f"Unknown tool: {tool}")
+        return results

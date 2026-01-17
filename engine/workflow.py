@@ -1,4 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor, as_completed
+from engine.memory import MemoryStore
 
 
 class WorkflowEngine:
@@ -9,18 +10,26 @@ class WorkflowEngine:
         """
         self.agents = agents
         self.workflow = workflow_config
-        self.context = {}
+
+        # Persistent memory
+        self.memory = MemoryStore()
+        self.context = self.memory.load()
 
     def run(self):
         workflow_type = self.workflow.get("type")
 
         if workflow_type == "sequential":
-            return self._run_sequential()
+            result = self._run_sequential()
 
-        if workflow_type == "parallel":
-            return self._run_parallel()
+        elif workflow_type == "parallel":
+            result = self._run_parallel()
 
-        raise ValueError(f"Unsupported workflow type: {workflow_type}")
+        else:
+            raise ValueError(f"Unsupported workflow type: {workflow_type}")
+
+        # Save persistent memory after workflow execution
+        self.memory.save(self.context)
+        return result
 
     def _run_sequential(self):
         print("\n▶ Starting SEQUENTIAL workflow\n")
