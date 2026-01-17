@@ -47,7 +47,7 @@ yaml-multi-agent-orchestrator/
 │ ├── agent.py
 │ ├── parser.py
 │ ├── workflow.py
-│ └── init.py
+│ └──__init__.py
 │
 ├── configs/
 │ ├── sequential.yaml
