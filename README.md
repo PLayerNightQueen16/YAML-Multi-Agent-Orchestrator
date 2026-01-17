@@ -54,7 +54,7 @@ yaml-multi-agent-orchestrator/
 │ └── parallel.yaml
 │
 └── outputs/
-└── sample_run.txt
+  └── sample_run.txt
 ```
 
 ---
