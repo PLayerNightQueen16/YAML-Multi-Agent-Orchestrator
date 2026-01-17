@@ -15,6 +15,7 @@ Building multi-agent systems today requires significant orchestration code to ma
 - Execution order
 - Parallelism
 - Context passing
+- Tool coordination
 
 This approach is:
 - Code-heavy
@@ -31,6 +32,8 @@ This project explores how multi-agent workflows can be defined declaratively, si
 - Sequential agent execution
 - Parallel agent execution with aggregation
 - Automatic shared context passing
+- Declarative tool usage per agent (MCP-style support)
+- Persistent shared memory across workflow runs
 - Deterministic execution flow
 - Console-based execution and output
 
@@ -44,9 +47,10 @@ yaml-multi-agent-orchestrator/
 ├── requirements.txt
 │
 ├── engine/
-│ ├── agent.py
-│ ├── parser.py
-│ ├── workflow.py
+│ ├── agent.py        # Agent logic + tool execution 
+│ ├── parser.py       # YAML parsing and validation
+│ ├── workflow.py     # Sequential and Parrallel orchestration 
+| ├── memory.py       # Persistent memory store
 │ └── __init__.py
 │
 ├── configs/
@@ -68,6 +72,8 @@ agents:
   - id: researcher
     role: Research Assistant
     goal: Find key insights about electric vehicles
+    tools:
+      - python 
 
   - id: writer
     role: Content Writer
@@ -114,11 +120,14 @@ workflow:
 
 1. YAML configuration is parsed and validated
 2. Agents are instantiated from declarative definitions
-3. Workflow engine executes agents sequentially or in parallel
-4. Agent outputs are stored in shared context
-5. Downstream agents automatically receive relevant context
-6. Final results are printed to the console
-7. No orchestration logic is hardcoded.
+3. Persistent shared memory is loaded at workflow start
+4. Workflow engine executes agents sequentially or in parallel
+5. Agents optionally invoke tools declared in configuration 
+6. Agent outputs are stored in shared context
+7. Downstream agents automatically receive relevant context
+8. Updated memory state is persisted after execution 
+9. Final results are printed to the console
+
 
 ---
 
@@ -152,7 +161,8 @@ Sample output is available in `outputs/sample_run.txt`.
 
 - Declarative over imperative
 - Configuration-driven collaboration
-- Clear separation of concerns
+- Explicit orchestration boundaries 
+- Deterministic execution 
 - Simplicity over production complexity
 
 ---
@@ -161,13 +171,13 @@ Sample output is available in `outputs/sample_run.txt`.
 
 This project intentionally does not include:
 
-- Persistent memory
 - Distributed execution
 - Advanced scheduling or retries
 - UI dashboards
 - Complex dependency graphs
+- Autonomous long-term learning
 
-The focus is clarity and rapid prototyping.
+The focus is clarity, correctness, and rapid experimentation.
 
 ---
 
@@ -175,6 +185,6 @@ The focus is clarity and rapid prototyping.
 
 This project demonstrates how multi-agent systems can be made easier to define, reason about, and experiment with by moving orchestration logic from code into configuration.
 
-It provides a foundation for future extensions such as execution graphs, memory systems, and tool integration.
+It provides a strong foundation for future extensions such as hierarchal agents, advanced memory strategies, execution graphs, and richer tool integration.
 
 ---
