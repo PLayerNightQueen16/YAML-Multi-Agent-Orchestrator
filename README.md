@@ -121,12 +121,14 @@ workflow:
 1. YAML configuration is parsed and validated
 2. Agents are instantiated from declarative definitions
 3. Persistent shared memory is loaded at workflow start
-4. Workflow engine executes agents sequentially or in parallel
-5. Agents optionally invoke tools declared in configuration 
-6. Agent outputs are stored in shared context
-7. Downstream agents automatically receive relevant context
-8. Updated memory state is persisted after execution 
-9. Final results are printed to the console
+4. Persistent memory is stored locally on the disk
+5. If no memory file exists, it is automatically created on first run
+6. Workflow engine executes agents sequentially or in parallel
+7. Agents optionally invoke tools declared in configuration 
+8. Agent outputs are stored in shared context
+9. Downstream agents automatically receive relevant context
+10. Updated memory state is persisted after execution 
+11. Final results are printed to the console
 
 
 ---
@@ -151,6 +153,16 @@ python3 main.py configs/sequential.yaml
 
 ```bash
 python3 main.py configs/parallel.yaml
+```
+
+### Optional: Enable OpenAI-powered agents
+
+By default, the engine runs in mock mode and does not require any API keys.
+
+To enable real LLM-backed agent execution, set your OpenAI API key as an environment variable:
+
+```bash
+export OPENAI_API_KEY="your_api_key_here"
 ```
 
 Sample output is available in `outputs/sample_run.txt`.
