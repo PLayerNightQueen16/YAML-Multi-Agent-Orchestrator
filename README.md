@@ -31,6 +31,7 @@ This project explores how multi-agent workflows can be defined declaratively, si
 - Declarative agent definitions using YAML
 - Sequential agent execution
 - Parallel agent execution with aggregation
+- Hierarchical agents (subagents)
 - Automatic shared context passing
 - Declarative tool usage per agent (MCP-style support)
 - Persistent shared memory across workflow runs
@@ -55,7 +56,8 @@ yaml-multi-agent-orchestrator/
 │
 ├── configs/
 │ ├── sequential.yaml
-│ └── parallel.yaml
+│ ├── parallel.yaml
+│ └── subagents.yaml
 │
 └── outputs/
   └── sample_run.txt
@@ -114,6 +116,38 @@ workflow:
     agent: reviewer
 ```
 
+### Subagents (Hierarchical Agents)
+
+Agents can declaratively define **subagents** that execute within the scope of a parent agent.
+
+Subagents are:
+- Defined inside an agent’s YAML configuration
+- Instantiated during agent construction
+- Executed as part of the parent agent’s logic
+- Isolated from the global workflow graph
+
+This enables **hierarchical orchestration** without modifying the top-level workflow.
+
+**Example**
+
+```yaml
+agents:
+  - id: reviewer
+    role: Tech Lead
+    goal: Review and consolidate proposals
+    subagents:
+      - id: backend_reviewer
+        role: Backend Reviewer
+        goal: Review backend proposal
+      - id: frontend_reviewer
+        role: Frontend Reviewer
+        goal: Review frontend proposal
+
+workflow:
+  type: sequential
+  steps:
+    - agent: reviewer
+```
 ---
 
 ## How It Works
@@ -172,6 +206,7 @@ Sample output is available in `outputs/sample_run.txt`.
 ## Design Principles
 
 - Declarative over imperative
+- Hierarchical agent composition
 - Configuration-driven collaboration
 - Explicit orchestration boundaries 
 - Deterministic execution 
@@ -183,7 +218,7 @@ Sample output is available in `outputs/sample_run.txt`.
 
 This project intentionally does not include:
 
-- Distributed execution
+- Fully autonomous or self-modifying agent graphs
 - Advanced scheduling or retries
 - UI dashboards
 - Complex dependency graphs
